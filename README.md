@@ -11,16 +11,23 @@ totp = pyotp.TOTP(secret)
 otp = totp.now()
 print("Current OTP:", otp)
 ```
-However I did not really learn how it works, so I decided to write a version using Python and **no** additional libraries. I did end up adding the time library so I would not have to keep typing in the date, and time over and over again, but aside from that convienience it is all just vanilla Python.
+While this approach was effective, it didn't provide me with a deep understanding of the underlying mechanics. So, I challenged myself to implement TOTP without relying on external libraries. The only exception was the time module, which I used to avoid manually entering the current date and time repeatedly. Beyond that, the implementation is pure, vanilla Python.
 
-So I started with https://datatracker.ietf.org/doc/html/rfc6238 
-The TOTP algorithm has a secret value that both parties have, then it calculates a counter, that counts how many 30 second periods have occured since the Unix epoch (00:00:00 UTC on Thursday, 1 January 1970).
-So once we count how many half minutes have passed since then, we just slap that on the end of the secret and calulate the HOTP value for that.
-The Hotp algorith takes a secret value, concatenates a counter to it, and then uses that Value to get an HMAC (Hash-based Message Authentication Code) this value is then truncated to a set number of decimal digits. I set the default at 6 since that's what I needed.
-HMAC is an algorithm ussualy used to verify file integrity. For my purpose it uses SHA-1 for hashing.
-SHA-1 (Secure Hash Algorithm 1) is hashing function that has been around for a long time, and it is used as the core of TOTP.
 
-Like peeling back layers of onion I found out that the magic at the center was SHA-1.
+To begin, I referred to the RFC 6238 specification, which outlines the TOTP algorithm. Here's a high-level overview of how it works:
+
+1. Secret Key: Both the server and the client share a secret key.
+
+2. Time-Based Counter: The algorithm calculates the number of 30-second intervals (or "time steps") that have elapsed since the Unix epoch (00:00:00 UTC on January 1, 1970).
+
+3. HOTP Calculation: The TOTP value is derived by applying the HMAC-Based One-Time Password (HOTP) algorithm to the combination of the secret key and the time-based counter.
+
+4. Truncation: The resulting HMAC value is truncated to a fixed number of digits (typically 6).
+
+The HOTP algorithm itself relies on HMAC (Hash-based Message Authentication Code), which is commonly used for verifying data integrity. In this case, HMAC uses SHA-1 (Secure Hash Algorithm 1) as its underlying hashing function. SHA-1, despite its age, remains the core of TOTP's functionality.
+
+
+To better understand the process, I visualized the layers of the TOTP algorithm as follows:
 ```
 ┌──────────────────┐
 │    TOTP          │
@@ -35,4 +42,4 @@ Like peeling back layers of onion I found out that the magic at the center was S
 │└────────────────┘│
 └──────────────────┘
 ```
-So I started in center, and did each step in it's own module. Then as each new layer was applied it just imports the previous layer. I tried to leave notes for future me, I am sure he will let me know if they are helpful.
+I started by implementing the innermost layer (SHA-1) and worked my way outward, adding each subsequent layer as a separate module. This modular approach allowed me to build and test each component independently. I tried to leave notes for future me, I am sure he will let me know if they are helpful.
