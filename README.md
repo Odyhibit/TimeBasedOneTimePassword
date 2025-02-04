@@ -21,7 +21,7 @@ HMAC is an algorithm ussualy used to verify file integrity. For my purpose it us
 SHA-1 (Secure Hash Algorithm 1) is hashing function that has been around for a long time, and it is used as the core of TOTP.
 
 Like peeling back layers of onion I found out that the magic at the center was SHA-1.
-````
+```
 ┌──────────────────┐
 │    TOTP          │
 │┌────────────────┐│
