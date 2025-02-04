@@ -3,14 +3,14 @@
 ##Time Based One Time Password
 
 I started using an authenticator app to do my Multi-Factor logins. It worked great, but I had no idea how. So I decided to try and duplicate the functionality for myself in Python. Using a library it was 5 lines of Python.
-'''python
+```python
 import pyotp
 
 secret = 'SUPERSECRETPA55WORDYOUCANTGUESS5'
 totp = pyotp.TOTP(secret)
 otp = totp.now()
 print("Current OTP:", otp)
-'''
+```
 However I did not really learn how it works, so I decided to write a version using Python and **no** additional libraries. I did end up adding the time library so I would not have to keep typing in the date, and time over and over again, but aside from that convienience it is all just vanilla Python.
 
 So I started with https://datatracker.ietf.org/doc/html/rfc6238 
@@ -21,7 +21,7 @@ HMAC is an algorithm ussualy used to verify file integrity. For my purpose it us
 SHA-1 (Secure Hash Algorithm 1) is hashing function that has been around for a long time, and it is used as the core of TOTP.
 
 Like peeling back layers of onion I found out that the magic at the center was SHA-1.
-'''
+````
 ┌──────────────────┐
 │    TOTP          │
 │┌────────────────┐│
@@ -34,5 +34,5 @@ Like peeling back layers of onion I found out that the magic at the center was S
 ││└──────────────┘││
 │└────────────────┘│
 └──────────────────┘
-'''
+```
 So I started in center, and did each step in it's own module. Then as each new layer was applied it just imports the previous layer. I tried to leave notes for future me, I am sure he will let me know if they are helpful.
