@@ -1,6 +1,6 @@
-#Multifactor Authentication
+# Multifactor Authentication
 
-##Time Based One Time Password
+## Time Based One Time Password
 
 I started using an authenticator app to do my Multi-Factor logins. It worked great, but I had no idea how. So I decided to try and duplicate the functionality for myself in Python. Using a library it was 5 lines of Python.
 ```python
