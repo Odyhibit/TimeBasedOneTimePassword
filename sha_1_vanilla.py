@@ -6,15 +6,29 @@ for example 448 bits is 56 bytes, and 512 bits is 64 bytes (bytes = bits/8)
 """
 
 
-def left_rotate(n, b):
-    return ((n << b) | (n >> (32 - b))) & 0xFFFFFFFF
+def left_rotate(num: int, bits: int) -> int:
+    """
+    Left shift a number, and truncate the answer to 32 bits.
+
+    :param num: number to shift (int32)
+    :param bits: number of bits to left shift (0-31)
+    :return: the number left shifted and truncated to 32 bits (int32)
+    """
+    return ((num << bits) | (num >> (32 - bits))) & 0xFFFFFFFF
 
 
-def int_to_bytes(n, length):
+def int_to_bytes(n: int, length: int) -> bytes:
+    """
+    Change an integer into bytes with a set length.
+
+    :param n: the integer to change
+    :param length: the number of bits to use
+    :return: a bytes version of the input number with the specified number of bits.
+    """
     return bytes((n >> (8 * (length - i - 1))) & 0xff for i in range(length))
 
 
-def bytes_to_int(b):
+def bytes_to_int(b: bytes) -> int:
     return sum((b[i] & 0xff) << (8 * (len(b) - i - 1)) for i in range(len(b)))
 
 
@@ -84,15 +98,14 @@ def sha1(message: bytes) -> bytes:
 
     # Convert the final hash values to bytes and concatenate them
     hash_bytes = (
-        int_to_bytes(h0, 4) +
-        int_to_bytes(h1, 4) +
-        int_to_bytes(h2, 4) +
-        int_to_bytes(h3, 4) +
-        int_to_bytes(h4, 4)
+            int_to_bytes(h0, 4) +
+            int_to_bytes(h1, 4) +
+            int_to_bytes(h2, 4) +
+            int_to_bytes(h3, 4) +
+            int_to_bytes(h4, 4)
     )
 
     return hash_bytes
-
 
 
 # Example usage
@@ -100,3 +113,4 @@ if __name__ == "__main__":
     test_message = b"hello world"
     hash_value = sha1(test_message)
     print(f"SHA-1: {hash_value.hex()}")
+
