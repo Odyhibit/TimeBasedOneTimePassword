@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOTP Tester</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.1.1/otpauth.umd.min.js"></script>
+    <script>
+        function generateSecret() {
+            const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            let secret = '';
+            for (let i = 0; i < 16; i++) {
+                secret += charset.charAt(Math.floor(Math.random() * charset.length));
+            }
+            return secret;
+        }
+
+        function updateTOTP(secret) {
+            const totp = new OTPAuth.TOTP({
+                algorithm: 'SHA1',
+                digits: 6,
+                period: 30,
+                secret: OTPAuth.Secret.fromBase32(secret)
+            });
+            document.getElementById("totp-code").innerText = totp.generate();
+        }
+
+        window.onload = function () {
+            const secret = generateSecret();
+            document.getElementById("secret").innerText = secret;
+            updateTOTP(secret);
+            setInterval(() => updateTOTP(secret), 30000);
+        }
+    </script>
+</head>
+<body>
+    <h1>TOTP Tester</h1>
+    <p>Secret Key: <span id="secret"></span></p>
+    <p>Current TOTP Code: <strong id="totp-code"></strong></p>
+</body>
+</html>
