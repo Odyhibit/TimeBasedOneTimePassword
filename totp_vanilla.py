@@ -4,11 +4,11 @@ import htop_vanilla
 import time
 
 
-def totp(key: bytes, time_step: int = 30, digits: int = 6) -> str:
+def totp(key: str, time_step: int = 30, digits: int = 6) -> str:
     """
     Generate a Time-Based One-Time Password (TOTP).
 
-    :param key: The secret key (bytes)
+    :param key: The secret key (base32 encoded bytes)
     :param time_step: The time step in seconds (default is 30)
     :param digits: The number of digits in the OTP (default is 6)
     :return: TOTP as a string
@@ -16,7 +16,7 @@ def totp(key: bytes, time_step: int = 30, digits: int = 6) -> str:
     current_time = int(time.time())
     counter = current_time // time_step
 
-    return htop_vanilla.hotp(key, counter, digits)
+    return htop_vanilla.hotp(base32_decode(key), counter, digits)
 
 
 def base32_decode(encoded: str) -> bytes:
@@ -29,7 +29,6 @@ def base32_decode(encoded: str) -> bytes:
 
 # Example usage
 if __name__ == "__main__":
-    base32_key = 'NCHXDMEQ6L7IJXGN'  # Secret key (must be kept secure)
-    test_key = base32_decode(base32_key)
+    test_key = 'NCHXDMEQ6L7IJXGN'  # Secret key (must be kept secure)
     totp = totp(test_key)
     print(f"TOTP: {totp}")
