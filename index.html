@@ -53,7 +53,7 @@
             const secret = generateSecret();
             document.getElementById("secret").innerText = secret;
             updateTOTP(secret);
-            setInterval(() => updateTOTP(secret), 30000);
+            setInterval(() => updateTOTP(secret), 5000);
         }
     </script>
 </head>
