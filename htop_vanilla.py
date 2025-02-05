@@ -11,17 +11,14 @@ def hotp(key: bytes, counter: int, digits: int = 6):
     :return: HOTP as a string
     """
 
-    # Generate HMAC using the key and counter
     hmac_result = hmac_vanilla.hmac(key, counter.to_bytes(8, byteorder="big"))
 
     # Dynamic truncation (RFC 4226, section 5.3)
     offset = hmac_result[-1] & 0x0F  # Get the last 4 bits as the offset
     truncated_hash = hmac_result[offset:offset + 4]  # Get 4 bytes starting at the offset
 
-    # Convert the truncated hash to an integer
+    # Convert the truncated hash to an integer with the set number of digits
     hotp_value = int.from_bytes(truncated_hash, byteorder='big') & 0x7FFFFFFF  # Mask to 31 bits
-
-    # Reduce the value to the desired number of digits
     hotp_value = hotp_value % (10 ** digits)
 
     # Return the HOTP as a zero-padded string
@@ -30,7 +27,7 @@ def hotp(key: bytes, counter: int, digits: int = 6):
 
 # Example usage
 if __name__ == "__main__":
-    key = b'12345678901234567890'  # Secret key (must be kept secure)
-    counter = 0  # Counter value (incremented after each use)
-    hotp = hotp(key, counter)
-    print(f"HOTP: {hotp}")
+    test_key = b'12345678901234567890'  # Secret key (must be kept secure)
+    test_counter = 0  # Counter value (incremented after each use)
+    results = hotp(test_key, test_counter)
+    print(f"HOTP: {results}")
