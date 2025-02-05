@@ -15,7 +15,6 @@ def totp(key: bytes, time_step: int = 30, digits: int = 6) -> str:
     """
     current_time = int(time.time())
     counter = current_time // time_step
-    print(f"Counter: {counter} epoch: {current_time}")
 
     return htop_vanilla.hotp(key, counter, digits)
 
