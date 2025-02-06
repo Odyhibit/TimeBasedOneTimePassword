@@ -45,3 +45,9 @@ To better understand the process, I visualized the layers of the TOTP algorithm 
 I started by implementing the innermost layer (SHA-1) and worked my way outward, adding each subsequent layer as a separate module. This modular approach allowed me to build and test each component independently. I tried to leave notes for future me, I am sure he will let me know if they are helpful.
 
 If you want to test it out to verify that it works, here is page that will generate a 16 character secret in base32 (80 bits), and update the totp. (It may be a few seconds behind the command line). https://odyhibit.github.io/TimeBasedOneTimePassword/
+
+To test the script you can load the webpage, and get the base32 secret then run
+``` 
+./totp -s BASE32SECRETABCD
+```
+The script should produce a code that matches the webpage.
