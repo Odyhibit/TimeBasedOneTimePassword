@@ -48,6 +48,6 @@ If you want to test it out to verify that it works, here is page that will gener
 
 To test the script you can load the webpage, and get the base32 secret then run
 ``` 
-./totp -s BASE32SECRETABCD
+python totp.py -s BASE32SECRETABCD
 ```
 The script should produce a code that matches the webpage.
